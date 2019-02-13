@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?define ProductUpgradeCode="86b02a88-c847-4520-9da1-8b89a05d7948" ?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product
+    Id="*"
+    UpgradeCode="$(var.ProductUpgradeCode)"
+    Name="$(var.ProductName)"
+    Version="$(var.FileVersion)"
+    Manufacturer="$(var.CompanyName)"
+    Language="1033">
+
+    <Package
+      InstallerVersion="200"
+      Compressed="yes"
+      InstallScope="perMachine"
+      Description="$(var.ProductVersion)"
+      Comments="$(var.FileDescription)"/>
+
+    <MajorUpgrade
+      AllowDowngrades="no"
+      AllowSameVersionUpgrades="no"
+      IgnoreRemoveFailure="no"
+      DowngradeErrorMessage="A later version of [ProductName] is already installed. Setup will now exit."
+      Schedule="afterInstallValidate" />
+
+    <MediaTemplate EmbedCab="yes" />
+
+    <Condition Message="You need to be an administrator to install this product.">
+      Privileged
+    </Condition>
+
+    <Feature Id="MainApplication" Title="$(var.ProductName) $(var.FileVersion)" Level="1">
+      <ComponentRef Id="$(var.ProductName)" />
+    </Feature>
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLDIR" Name="$(var.ProductName)" />
+      </Directory>
+    </Directory>
+
+    <Component Id="$(var.ProductName)" Guid="*" Directory="INSTALLDIR">
+      <File Id="$(var.RegistryEnforcer.TargetFileName)" Source="$(var.RegistryEnforcer.TargetPath)" KeyPath="yes" />
+      <File Id="$(var.RegistryEnforcer.TargetFileName).config" Source="$(var.RegistryEnforcer.TargetPath).config" />
+      <ServiceInstall Name="$(var.ProductName)"
+                      DisplayName="$(var.ProductName)"
+                      Description="$(var.FileDescription)"
+                      ErrorControl="ignore"
+                      Type="ownProcess"
+                      Account="LocalSystem"
+                      Vital="yes"
+                      Start="auto"
+                      Interactive="no" />
+      <ServiceControl Id="ServiceControl_$(var.ProductName)"
+                      Name="$(var.ProductName)"
+                      Start="install"
+                      Stop="both"
+                      Remove="uninstall"
+                      Wait="yes" />
+    </Component>
+  </Product>
+</Wix>

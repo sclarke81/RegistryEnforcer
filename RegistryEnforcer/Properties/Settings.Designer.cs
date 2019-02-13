@@ -12,7 +12,7 @@ namespace RegistryEnforcer.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.7.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.9.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -25,37 +25,20 @@ namespace RegistryEnforcer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string KeyPath {
+        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-8""?>
+<ArrayOfRegistryItem xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
+  <RegistryItem>
+    <KeyPath></KeyPath>
+    <ValueName></ValueName>
+    <OverrideValue></OverrideValue>
+  </RegistryItem>
+</ArrayOfRegistryItem>")]
+        public global::RegistryEnforcer.RegistryItemList ItemsToEnforce {
             get {
-                return ((string)(this["KeyPath"]));
+                return ((global::RegistryEnforcer.RegistryItemList)(this["ItemsToEnforce"]));
             }
             set {
-                this["KeyPath"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string ValueName {
-            get {
-                return ((string)(this["ValueName"]));
-            }
-            set {
-                this["ValueName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int OverrideValue {
-            get {
-                return ((int)(this["OverrideValue"]));
-            }
-            set {
-                this["OverrideValue"] = value;
+                this["ItemsToEnforce"] = value;
             }
         }
     }

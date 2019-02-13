@@ -5,9 +5,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("RegistryEnforcer")]
-[assembly: AssemblyDescription("This is a windows service that monitors a registry value for changes. When the value changes it is set to the specified override value.")]
+[assembly: AssemblyDescription("This is a windows service that monitors registry values for changes. When a value changes it is set to the specified override value.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Stephen Clarke")]
 [assembly: AssemblyProduct("RegistryEnforcer")]
 [assembly: AssemblyCopyright("Copyright © Stephen Clarke 2018")]
 [assembly: AssemblyTrademark("")]

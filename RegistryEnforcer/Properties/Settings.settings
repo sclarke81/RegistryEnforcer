@@ -2,14 +2,15 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="RegistryEnforcer.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="KeyPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="ValueName" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="OverrideValue" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+    <Setting Name="ItemsToEnforce" Type="RegistryEnforcer.RegistryItemList" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;ArrayOfRegistryItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;RegistryItem&gt;
+    &lt;KeyPath&gt;&lt;/KeyPath&gt;
+    &lt;ValueName&gt;&lt;/ValueName&gt;
+    &lt;OverrideValue&gt;&lt;/OverrideValue&gt;
+  &lt;/RegistryItem&gt;
+&lt;/ArrayOfRegistryItem&gt;</Value>
     </Setting>
   </Settings>
 </SettingsFile>

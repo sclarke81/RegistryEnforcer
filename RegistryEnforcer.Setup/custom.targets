@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <UsingTask TaskName="GetFileVersionInfo"
+             TaskFactory="CodeTaskFactory"
+             AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+    <ParameterGroup>
+      <AssemblyPath ParameterType="System.String" Required="true" />
+      <FileVersion ParameterType="System.String" Output="true" />
+      <CompanyName ParameterType="System.String" Output="true" />
+      <FileDescription ParameterType="System.String" Output="true" />
+      <ProductName ParameterType="System.String" Output="true" />
+      <ProductVersion ParameterType="System.String" Output="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.Diagnostics" />
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+          Log.LogMessage("Getting file info of assembly at: " + this.AssemblyPath, MessageImportance.High);
+
+          FileVersionInfo fileInfo = FileVersionInfo.GetVersionInfo(this.AssemblyPath);
+          this.FileVersion = fileInfo.FileVersion;
+          this.CompanyName = fileInfo.CompanyName;
+          this.FileDescription = fileInfo.FileDescription;
+          this.ProductName = fileInfo.ProductName;
+          this.ProductVersion = fileInfo.ProductVersion;
+
+          Log.LogMessage("Found the following information for " + this.AssemblyPath +
+                         ": FileVersion=" + this.FileVersion +
+                         ", CompanyName=" + this.CompanyName +
+                         ", FileDescription=" + this.FileDescription +
+                         ", ProductName=" + this.ProductName,
+                         ", ProductVersion=" + this.ProductVersion,
+                         MessageImportance.Normal);
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+  <Target Name="GetExeInformation">
+    <GetFileVersionInfo AssemblyPath="$(HarvestPath)RegistryEnforcer.exe">
+      <Output TaskParameter="FileVersion" PropertyName="FileVersion" />
+      <Output TaskParameter="CompanyName" PropertyName="CompanyName" />
+      <Output TaskParameter="FileDescription" PropertyName="FileDescription" />
+      <Output TaskParameter="ProductName" PropertyName="ProductName" />
+      <Output TaskParameter="ProductVersion" PropertyName="ProductVersion" />
+    </GetFileVersionInfo>
+  </Target>
+  <Target Name="DefineVariables" DependsOnTargets="GetExeInformation" BeforeTargets="HarvestDirectory">
+    <PropertyGroup>
+      <DefineConstants>
+        HarvestPath=$(HarvestPath);
+        FileVersion=$(FileVersion);
+        CompanyName=$(CompanyName);
+        FileDescription=$(FileDescription);
+        ProductName=$(ProductName);
+        ProductVersion=$(ProductVersion);
+      </DefineConstants>
+    </PropertyGroup>
+  </Target>
+  <ItemGroup>
+    <HarvestDirectory Include="$(HarvestPath)">
+      <PreprocessorVariable>var.HarvestPath</PreprocessorVariable>
+      <ComponentGroupName>ApplicationComponentGroup</ComponentGroupName>
+      <DirectoryRefID>INSTALLDIR</DirectoryRefID>
+      <SuppressRootDirectory>true</SuppressRootDirectory>
+    </HarvestDirectory>
+  </ItemGroup>
+</Project>

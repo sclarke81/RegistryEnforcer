@@ -1,13 +1,14 @@
 ﻿using Microsoft.Win32;
-using System.ServiceProcess;
-using System.Configuration;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ServiceProcess;
 
 namespace RegistryEnforcer
 {
     public partial class RegistryEnforcer : ServiceBase
     {
-        private RegistryWatcher Watcher { get; set; }
+        private List<RegistryWatcher> Watchers { get; set; } = new List<RegistryWatcher>();
 
         public RegistryEnforcer()
         {
@@ -16,20 +17,30 @@ namespace RegistryEnforcer
 
         protected override void OnStart(string[] args)
         {
-            Watcher = new RegistryWatcher(Registry.LocalMachine, Properties.Settings.Default.KeyPath, Properties.Settings.Default.ValueName);
-            Watcher.RegistryValueChangeEvent += Watcher_EventArrived;
+            foreach (RegistryItem item in Properties.Settings.Default.ItemsToEnforce)
+            {
+                RegistryWatcher watcher = new RegistryWatcher(Registry.LocalMachine, item.KeyPath, item.ValueName);
+                watcher.RegistryValueChangeEvent += Watcher_EventArrived;
+                Watchers.Add(watcher);
+            }
         }
 
         protected override void OnStop()
         {
-            Watcher = null;
+            Watchers.Clear();
         }
 
         private void Watcher_EventArrived(object sender, RegistryValueChangeEventArgs e)
         {
-            var watcher = sender as RegistryWatcher;
+            RegistryWatcher watcher = sender as RegistryWatcher;
             Console.WriteLine($"{watcher.ValueName} changed to {e.Value}");
-            Watcher.Value = Properties.Settings.Default.OverrideValue;
+            RegistryItem item = Properties.Settings.Default.ItemsToEnforce.SingleOrDefault(i => i.KeyPath == watcher.KeyPath && i.ValueName == watcher.ValueName);
+
+            if (item != null)
+            {
+                Console.WriteLine($"{watcher.ValueName} changed to {e.Value}");
+                watcher.Value = item.OverrideValue; 
+            }
         }
 
         internal void TestStartupAndStop()
